@@ -3,11 +3,12 @@ import {View, Text, TextInput, StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
-        padding: 23,
+        margin: 23,
     },
     textArea: {
         backgroundColor: '#ffffff',
         borderWidth: 1,
+        color: '#000000',
         borderColor: 'rgba(229, 229, 229, 1)',
         borderRadius: 3,
         paddingHorizontal: 10,
@@ -17,12 +18,25 @@ const styles = StyleSheet.create({
     }
 })
 
-export default function TextArea({placeholder, value = '', multiline, number}) {
-    const [inputText, setInputText] = useState(value);
-    console.log(inputText);
+export default function TextArea({
+    placeholder, 
+    editable, 
+    value, 
+    onChangeText, 
+    multiline, 
+    number
+}) {
     return (
         <View style={styles.container}>
-            <TextInput style={styles.textArea} multiline={multiline} numberOfLines={number} value={inputText} placeholder={placeholder} onChangeText={(text) => setInputText(text)} />
+            <TextInput 
+                style={styles.textArea} 
+                editable={editable} 
+                multiline={multiline} 
+                numberOfLines={number} 
+                value={value} 
+                placeholder={placeholder} 
+                onChangeText={onChangeText} 
+            />
         </View>
     )
 }
