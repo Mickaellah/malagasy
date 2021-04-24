@@ -28,15 +28,30 @@ const styles = StyleSheet.create({
     }
 })
 
-export default function NextButton({ title, onPress = () => null }) {
+export default function NextButton({ 
+    title, 
+    onPress = () => null 
+}) {
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={[styles.buttons, styles.blueButton]} onPress={onPress}>
+            <TouchableOpacity 
+                style={[
+                    styles.buttons, 
+                    styles.blueButton
+                ]} 
+                onPress={onPress}
+            >
                 <Text style={{color: '#ffffff'}}>
                     {title}
                 </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.buttons, styles.whiteButton]} onPress={onPress}>
+            <TouchableOpacity 
+                style={[
+                    styles.buttons, 
+                    styles.whiteButton
+                ]} 
+                onPress={onPress}
+            >
                 <Text style={{color: '#06B6D4'}}>
                     {title}
                 </Text>
