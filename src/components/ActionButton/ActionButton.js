@@ -17,12 +17,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         lineHeight: 19,
         fontWeight: '600',
-        paddingTop: 10,
     },
     itemWrapper: {
         flexDirection: 'row', 
         justifyContent: 'flex-end',
-        alignItems: 'center'
+        padding: 10,
+        alignItems: 'center',
     },
     text: {
         paddingRight: 11,
