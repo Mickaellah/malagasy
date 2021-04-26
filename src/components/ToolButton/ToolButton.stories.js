@@ -6,8 +6,9 @@ import ToolButton from './ToolButton';
 
 import Plus from '../../icons/plus.svg';
 import Tick from '../../icons/tick.svg';
-import DoubleTicks from '../../icons/double-ticks.svg';
+import DoubleTicks from '../../icons/double-tick.svg';
 import Chevron from '../../icons/chevron-left.svg';
+import Display from '../../icons/display.svg';
 
 const styles = StyleSheet.create({
   plusButton: {
@@ -58,7 +59,7 @@ storiesOf('ToolButton', module)
           style={styles.arrowButton}
         />
         <ToolButton
-          icon={<DoubleTicks />}
+          icon={<Display />}
           onPress={() => alert('This button has been clicked')}
           style={styles.displayButton}
         />
