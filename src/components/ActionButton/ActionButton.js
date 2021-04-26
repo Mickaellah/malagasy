@@ -3,7 +3,6 @@ import {
     View, 
     Text, 
     TouchableOpacity, 
-    Image, 
     StyleSheet
 } from 'react-native';
 
@@ -14,28 +13,26 @@ const styles = StyleSheet.create({
         padding: 0,
     },
     button: {
-        flexDirection: 'row', 
-        justifyContent: 'space-between',
+        flexDirection: 'row',
         fontSize: 16,
         lineHeight: 19,
         fontWeight: '600',
         paddingTop: 10,
     },
-    text: {
-        alignSelf: 'flex-end',
-        textAlign: 'right',
-
+    itemWrapper: {
+        flexDirection: 'row', 
+        justifyContent: 'flex-end',
+        alignItems: 'center'
     },
-    image: {
-        marginLeft: 11,
-        alignSelf: 'flex-start',
-    }
+    text: {
+        paddingRight: 11,
+    },
 })
 
 export default function ActionButton({
     buttonText, 
-    onPress, 
-    icon, 
+    onPress,
+    icon,
     textColor
 }) {
     return (
@@ -44,12 +41,12 @@ export default function ActionButton({
                 onPress={onPress} 
                 style={styles.button}
             >
-                <Text style={[textColor, styles.text]}> {buttonText}
-                </Text>
-                <Image 
-                    source={icon} 
-                    style={styles.image} 
-                />
+                <View style={styles.itemWrapper}>
+                    <Text style={[textColor, styles.text]}> 
+                        {buttonText}
+                    </Text>
+                    {icon}
+                </View>
             </TouchableOpacity>
         </View>
     )

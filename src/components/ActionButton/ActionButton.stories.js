@@ -5,9 +5,9 @@ import {storiesOf} from '@storybook/react-native';
 
 
 import ActionButton from './ActionButton';
-import RightArrow from '../../icons/RightArrow.png';
-import CorrectAnswer from '../../icons/CorrectAnswer.png';
-import WrongAnswer from '../../icons/WrongAnswer.png';
+import Arrow from '../../icons/arrow.svg';
+import Correct from '../../icons/correct.svg';
+import Wrong from '../../icons/wrong.svg';
 
 const styles = StyleSheet.create({
     blueText: {
@@ -29,25 +29,26 @@ storiesOf('Action button', module)
             <View>
                 <ActionButton 
                     buttonText="Learn" 
-                    onPress={() => alert('Learn more!')} icon={RightArrow} 
+                    onPress={() => alert('Learn more!')}  
+                    icon={<Arrow />}
                     textColor={styles.blueText} 
                 />
                 <ActionButton 
                     buttonText="Pick" 
-                    onPress={() => alert('Pick a solution.')} 
-                    icon={RightArrow} 
+                    onPress={() => alert('Pick a solution.')}
+                    icon={<Arrow />}
                     textColor={styles.blueText} 
                 />
                 <ActionButton 
                     buttonText="Correct" 
                     onPress={() => alert('Your answer is correct.')} 
-                    icon={CorrectAnswer} 
+                    icon={<Correct />}
                     textColor={styles.greenText} 
                 />
                 <ActionButton 
                     buttonText="Wrong" 
                     onPress={() => alert('Your answer is wrong.')} 
-                    icon={WrongAnswer} 
+                    icon={<Wrong />}
                     textColor={styles.purpleText} 
                 />
             </View>
