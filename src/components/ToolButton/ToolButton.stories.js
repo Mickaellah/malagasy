@@ -23,10 +23,8 @@ const styles = StyleSheet.create({
     paddingVertical: 13,
   },
   arrowButton: {
-    paddingTop: 14,
-    paddingRight: 14,
-    paddingLeft: 16,
-    paddingBottom: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
   },
   displayButton: {
     padding: 9,
