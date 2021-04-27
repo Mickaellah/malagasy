@@ -15,7 +15,8 @@ export const getAllCategoriesIds = () => {
 };
 
 export const getPhraseIdsForCategory = catId => {
-  return categoriesData.categories.find(cat => cat.id === catId).phrasesIds;
+  const category = categoriesData.categories.find(cat => cat.id === catId);
+  return (category && category.phrasesIds) || null;
 };
 
 export const getAllPhrases = () => {
@@ -27,10 +28,14 @@ export const findPhraseCategories = phraseId => {
 };
 
 export function findCategoryById(id) {
-  throw 'not implemented!';
+  const category = categoriesData.categories;
+  return (category && category.find(cat => cat.id === id)) || null;
+  // throw 'not implemented!';
   // TODO implement
 }
 export function findPhraseById(id) {
-  throw 'not implemented!';
+  const phrase = phrasesData.phrases;
+  return (phrase && phrase.find(item => item.id === id)) || null;
+  // throw 'not implemented!';
   // TODO implement
 }
