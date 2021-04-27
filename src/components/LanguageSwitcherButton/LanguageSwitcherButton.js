@@ -3,17 +3,17 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    margin: 0,
     alignItems: 'center',
+    marginVertical: 0,
+    marginHorizontal: 'auto',
     justifyContent: 'center',
+    width: '100%',
   },
   button: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignSelf: 'center',
     paddingHorizontal: 10,
     paddingVertical: 13,
     backgroundColor: '#06B6D4',
-    textAlignVertical: 'center',
     borderRadius: 30,
   },
   wrapper: {
