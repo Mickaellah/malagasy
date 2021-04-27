@@ -10,8 +10,6 @@ const styles = StyleSheet.create({
   },
   buttons: {
     backgroundColor: '#06B6D4',
-    // paddingHorizontal: 11,
-    // paddingVertical: 13,
     margin: 10,
     borderRadius: 50,
     textAlign: 'center',
