@@ -6,6 +6,10 @@ import List from './List';
 import data from '../../data/categories.json';
 
 const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 23,
+    paddingVertical: 15,
+  },
   separator: {
     flex: 1,
     height: 1,
@@ -28,5 +32,5 @@ export const useList = () => {
 export const Separator = () => <View style={styles.separator} />;
 
 storiesOf('List', module)
-  .addDecorator(story => <View>{story()}</View>)
+  .addDecorator(story => <View style={styles.container}>{story()}</View>)
   .add('List', () => <List />);
