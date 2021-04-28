@@ -1,10 +1,12 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, TouchableWithoutFeedback} from 'react-native';
 
-export default function ListItem({name}) {
+export default function ListItem({name, onPress}) {
   return (
     <View>
-      <Text>{name}</Text>
+      <TouchableWithoutFeedback onPress={onPress}>
+        <Text>{name}</Text>
+      </TouchableWithoutFeedback>
     </View>
   );
 }
