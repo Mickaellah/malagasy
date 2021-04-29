@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     paddingVertical: 13,
     backgroundColor: '#06B6D4',
     borderRadius: 30,
+    marginTop: 10,
   },
   wrapper: {
     flexDirection: 'row',
