@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: 'solid',
     borderColor: '#E5E5E5',
+    backgroundColor: '#ffffff',
   },
   wrapper: {
     flexDirection: 'row',
