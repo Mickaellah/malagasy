@@ -40,10 +40,11 @@ export default function LanguageSwitcherButton({
   malagasy,
   onPress,
   icon,
+  style,
 }) {
   return (
     <View>
-      <TouchableOpacity onPress={onPress} style={styles.button}>
+      <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
         <View style={styles.wrapper}>
           <Text style={[styles.buttonText, styles.leftText]}>{english}</Text>
           {icon}
