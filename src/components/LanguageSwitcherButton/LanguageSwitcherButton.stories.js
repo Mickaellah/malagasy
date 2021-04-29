@@ -1,10 +1,17 @@
 import React, {useState} from 'react';
-import {View} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 
 import {storiesOf} from '@storybook/react-native';
 import LanguageSwitcherButton from './LanguageSwitcherButton';
 
 import LanguageSwitcher from '../../icons/language-switcher.svg';
+
+const styles = StyleSheet.create({
+  button: {
+    margin: 0,
+    padding: 0,
+  },
+});
 
 const Switcher = () => {
   const [englishLanguage, setEnglishLanguage] = useState('En');
@@ -22,6 +29,7 @@ const Switcher = () => {
 
   return (
     <LanguageSwitcherButton
+      style={styles.button}
       onPress={toggleSwitcher}
       english={englishLanguage}
       malagasy={malagasyLanguage}
