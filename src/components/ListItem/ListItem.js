@@ -9,6 +9,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 17,
     margin: 0,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#E5E5E5',
   },
   wrapper: {
     flexDirection: 'row',

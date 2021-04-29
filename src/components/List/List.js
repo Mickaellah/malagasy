@@ -1,13 +1,14 @@
 import React from 'react';
 import {FlatList, SafeAreaView, StyleSheet} from 'react-native';
+
 import ListItem from '../ListItem/ListItem';
+import SectionHeading from '../SectionHeading/SectionHeading';
 import {useList, Separator} from './List.stories';
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: '#E5E5E5',
+    margin: 0,
+    padding: 0,
   },
 });
 
@@ -16,6 +17,7 @@ export default function List() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <SectionHeading title={'Select a category: '} />
       <FlatList
         data={list}
         renderItem={({item}) => (
