@@ -1,5 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+
+import {connect} from 'react-redux';
+
+import {getPhrases} from '../../actions';
 
 import ToolButton from '../ToolButton/ToolButton';
 import LanguageSwitcherButton from '../LanguageSwitcherButton/LanguageSwitcherButton';
@@ -35,7 +39,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function DisplayPhrases() {
+function DisplayPhrases({phrases, getPhrases}) {
+  console.log(phrases.phrases);
+  useEffect(() => {
+    getPhrases();
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.buttonWrapper}>
@@ -53,6 +61,7 @@ export default function DisplayPhrases() {
           style={styles.languageSwither}
           icon={<LanguageSwitcher />}
           english={'En'}
+          phrases
           malagasy={'Ma'}
           onPress={() => alert('The language has swithed!!')}
         />
@@ -74,3 +83,12 @@ export default function DisplayPhrases() {
     </View>
   );
 }
+
+const mapDispatchProps = {
+  getPhrases,
+};
+
+export default connect(
+  state => ({phrases: state.phrases}),
+  mapDispatchProps,
+)(DisplayPhrases);
