@@ -1,5 +1,6 @@
 import React from 'react';
 import {FlatList, SafeAreaView, StyleSheet} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 import ListItem from '../ListItem/ListItem';
 import SectionHeading from '../SectionHeading/SectionHeading';
@@ -14,6 +15,7 @@ const styles = StyleSheet.create({
 
 export default function List() {
   const {list} = useList();
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -23,7 +25,7 @@ export default function List() {
         renderItem={({item}) => (
           <ListItem
             name={item.name.en}
-            onPress={() => alert(`${item.name.en} is pressed!!!`)}
+            onPress={() => navigation.navigate('Learning')}
           />
         )}
         ItemSeparatorComponent={() => <Separator />}

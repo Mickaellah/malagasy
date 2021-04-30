@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, TouchableWithoutFeedback, StyleSheet} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 import ActionButton from '../ActionButton/ActionButton';
 import Arrow from '../../icons/arrow.svg';
@@ -35,6 +36,8 @@ const styles = StyleSheet.create({
 });
 
 export default function ListItem({name, onPress}) {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={onPress}>
@@ -44,7 +47,7 @@ export default function ListItem({name, onPress}) {
             buttonText={'Learn'}
             icon={<Arrow />}
             textColor={styles.learnButtonColor}
-            onPress={() => alert('Learn more!')}
+            onPress={() => navigation.navigate('Learning')}
           />
         </View>
       </TouchableWithoutFeedback>

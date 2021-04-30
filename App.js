@@ -26,6 +26,8 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import Navigation from './src/navigation';
+
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
@@ -60,8 +62,12 @@ const App: () => Node = () => {
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+    // <SafeAreaView>
+    <Navigation />
+    // {/* </SafeAreaView> */}
+
+    // <SafeAreaView style={backgroundStyle}>
+    /* <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
@@ -85,8 +91,9 @@ const App: () => Node = () => {
           </Section>
           <LearnMoreLinks />
         </View>
-      </ScrollView>
-    </SafeAreaView>
+      </ScrollView> */
+    // <Navigation />
+    // </SafeAreaView>
   );
 };
 
