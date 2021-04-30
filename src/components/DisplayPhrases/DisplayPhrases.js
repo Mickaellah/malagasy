@@ -96,10 +96,14 @@ export default function DisplayPhrases() {
     getRandomPhrases,
     randomPhrases,
     randomOption,
+    categories,
   } = usePhrasesList();
-  console.log(phrases);
-  console.log(randomPhrases);
+
   console.log(randomOption);
+  const categoryPhraseId = categories
+    .find(cat => cat.phrasesIds)
+    ?.phrasesIds?.map(phrId => phrId === phrases?.find(phr => phr.id));
+  console.log(categoryPhraseId);
 
   const navigation = useNavigation();
 

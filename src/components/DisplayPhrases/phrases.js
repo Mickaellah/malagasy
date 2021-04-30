@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import PhrasesData from '../../data/phrases.json';
+import CategoryData from '../../data/categories.json';
 
 const styles = StyleSheet.create({
   separator: {
@@ -16,6 +17,7 @@ export const Separator = () => {
 
 export const usePhrasesList = () => {
   const [phrases, setPhrases] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [randomPhrases, setRandomPhrases] = useState({});
   const [randomOption, setRandomOption] = useState([]);
   const [isCorrect, setIsCorrect] = useState(false);
@@ -23,6 +25,7 @@ export const usePhrasesList = () => {
 
   useEffect(() => {
     setPhrases(PhrasesData.phrases);
+    setCategories(CategoryData.categories);
     setRandomPhrases(PhrasesData.phrases);
   }, []);
 
@@ -62,5 +65,6 @@ export const usePhrasesList = () => {
     getRandomPhrases,
     randomPhrases,
     randomOption,
+    categories,
   };
 };

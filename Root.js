@@ -1,6 +1,4 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Provider} from 'react-redux';
-import store from './src/store';
 
 import Storybook from './storybook';
 import App from './App';
@@ -20,13 +18,7 @@ const Root = () => {
     }
   }, [toggleStorybook]);
 
-  return storybookActive ? (
-    <Storybook />
-  ) : (
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
+  return storybookActive ? <Storybook /> : <App />;
 };
 
 export default Root;
