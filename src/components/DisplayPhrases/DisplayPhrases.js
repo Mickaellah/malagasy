@@ -107,18 +107,14 @@ export default function DisplayPhrases({route}) {
   );
 
   const categoryPhraseId = route.params.item.phrasesIds;
-  console.log(categoryPhraseId);
 
   const randomPhrases = phrases.map(phr => phr);
 
   const phraseIdsFromCategory = categoryPhraseId.map(phrId => phrId);
-  console.log(phraseIdsFromCategory);
-  console.log(randomPhrases);
 
   const FindPhraseIds = randomPhrases.filter(item =>
     phraseIdsFromCategory.includes(item.id),
   );
-  console.log(FindPhraseIds);
 
   function getRandomPhrases() {
     const random =
