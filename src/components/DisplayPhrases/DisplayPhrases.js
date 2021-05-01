@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
@@ -98,17 +98,49 @@ const styles = StyleSheet.create({
 });
 
 export default function DisplayPhrases({route}) {
-  const {
-    phrases,
-    getRandomPhrases,
-    randomPhrases,
-    randomOption,
-    categories,
-  } = usePhrasesList();
+  const [randomOptions, setRandomOptions] = useState([]);
+
+  const {phrases, phraseId} = usePhrasesList();
+
+  const FindPhrase = phraseId.find(
+    phr => phr.id === route.params.item.phrasesIds.find(phrId => phrId),
+  );
+
+  const categoryPhraseId = route.params.item.phrasesIds;
+  console.log(categoryPhraseId);
+
+  const randomPhrases = phrases.map(phr => phr);
+
+  const phraseIdsFromCategory = categoryPhraseId.map(phrId => phrId);
+  console.log(phraseIdsFromCategory);
+  console.log(randomPhrases);
+
+  const FindPhraseIds = randomPhrases.filter(item =>
+    phraseIdsFromCategory.includes(item.id),
+  );
+  console.log(FindPhraseIds);
+
+  function getRandomPhrases() {
+    const random =
+      FindPhraseIds[Math.floor(Math.random() * FindPhraseIds.length)];
+    const randomOpt1 =
+      FindPhraseIds[Math.floor(Math.random() * FindPhraseIds.length)];
+    const randomOpt2 =
+      FindPhraseIds[Math.floor(Math.random() * FindPhraseIds.length)];
+    const randomOpt3 =
+      FindPhraseIds[Math.floor(Math.random() * FindPhraseIds.length)];
+    const randomOptions = [random, randomOpt1, randomOpt2, randomOpt3];
+
+    setRandomOptions(randomOptions);
+  }
+
+  useEffect(() => {
+    getRandomPhrases();
+  }, [phrases]);
 
   const navigation = useNavigation();
 
-  const sortedPhrases = randomOption.sort(function (a, b) {
+  const sortedPhrases = randomOptions.sort(function (a, b) {
     if (a.name.en.toLowerCase() < b.name.en.toLowerCase()) return -1;
     if (a.name.en.toLowerCase() > b.name.en.toLowerCase()) return 1;
     return 0;
@@ -143,7 +175,7 @@ export default function DisplayPhrases({route}) {
       <View style={styles.phrasesHeading}>
         <SectionHeading title={'The phrase: '} />
         <PhraseTextArea
-          value={"roa ambin'ny folo"}
+          value={FindPhrase?.name?.mg}
           multiline={true}
           numberOfLines={3}
         />
