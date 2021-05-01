@@ -25,9 +25,14 @@ export default function List() {
         renderItem={({item}) => (
           <ListItem
             name={item.name.en}
-            onPress={() => navigation.navigate('Learning')}
+            onPress={() =>
+              navigation.navigate('Learning', {
+                item,
+              })
+            }
           />
         )}
+        keyExtractor={item => item.id}
         ItemSeparatorComponent={() => <Separator />}
       />
     </SafeAreaView>

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
@@ -43,6 +43,13 @@ const styles = StyleSheet.create({
     marginRight: 0,
     marginBottom: 0,
     marginLeft: 0,
+    flexDirection: 'row',
+    textAlignVertical: 'center',
+  },
+  title: {
+    fontSize: 18,
+    lineHeight: 22,
+    fontWeight: '400',
   },
   phrasesHeading: {
     marginTop: 30,
@@ -90,7 +97,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function DisplayPhrases() {
+export default function DisplayPhrases({route}) {
   const {
     phrases,
     getRandomPhrases,
@@ -98,12 +105,6 @@ export default function DisplayPhrases() {
     randomOption,
     categories,
   } = usePhrasesList();
-
-  console.log(randomOption);
-  const categoryPhraseId = categories
-    .find(cat => cat.phrasesIds)
-    ?.phrasesIds?.map(phrId => phrId === phrases?.find(phr => phr.id));
-  console.log(categoryPhraseId);
 
   const navigation = useNavigation();
 
@@ -137,6 +138,7 @@ export default function DisplayPhrases() {
       </View>
       <View style={styles.categoryHeading}>
         <SectionHeading title={'Category: '} />
+        <Text style={styles.title}>{route.params.item.name.en}</Text>
       </View>
       <View style={styles.phrasesHeading}>
         <SectionHeading title={'The phrase: '} />
