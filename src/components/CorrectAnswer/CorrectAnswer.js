@@ -8,6 +8,11 @@ import ActionButton from '../ActionButton/ActionButton';
 import SectionHeading from '../SectionHeading/SectionHeading';
 import PhraseTextArea from '../PhraseTextArea/PhraseTextArea';
 
+import Chevron from '../../icons/chevron-left.svg';
+import Display from '../../icons/display.svg';
+import LanguageSwitcher from '../../icons/language-switcher.svg';
+import Arrow from '../../icons/arrow.svg';
+
 const styles = StyleSheet.create({
   buttonWrapper: {
     flexDirection: 'row',

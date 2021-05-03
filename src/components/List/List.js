@@ -6,6 +6,8 @@ import ListItem from '../ListItem/ListItem';
 import SectionHeading from '../SectionHeading/SectionHeading';
 import {useList, Separator} from './List.stories';
 
+import Arrow from '../../icons/arrow.svg';
+
 const styles = StyleSheet.create({
   container: {
     margin: 0,
@@ -25,6 +27,8 @@ export default function List() {
         renderItem={({item}) => (
           <ListItem
             name={item.name.en}
+            buttonText={'Learn'}
+            icon={<Arrow />}
             onPress={() =>
               navigation.navigate('Learning', {
                 item,

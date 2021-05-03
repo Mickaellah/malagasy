@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, FlatList, SafeAreaView, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
 import ToolButton from '../ToolButton/ToolButton';
@@ -7,6 +7,7 @@ import LanguageSwitcherButton from '../LanguageSwitcherButton/LanguageSwitcherBu
 import ActionButton from '../ActionButton/ActionButton';
 import SectionHeading from '../SectionHeading/SectionHeading';
 import PhraseTextArea from '../PhraseTextArea/PhraseTextArea';
+import ListItem from '../ListItem/ListItem';
 
 import {usePhrasesList, Separator} from './phrases';
 
@@ -142,6 +143,8 @@ export default function DisplayPhrases({route}) {
     return 0;
   });
 
+  console.log(sortedPhrases);
+
   return (
     <View style={styles.container}>
       <View style={styles.buttonWrapper}>
@@ -176,25 +179,26 @@ export default function DisplayPhrases({route}) {
           numberOfLines={3}
         />
       </View>
-      <View style={styles.solutionHeading}>
+      <SafeAreaView style={styles.solutionHeading}>
         <SectionHeading title={'Pick a solution: '} />
-        <View style={styles.optionsWrapper}>
-          {sortedPhrases &&
-            sortedPhrases.map((phr, index) => {
-              return (
-                <View key={index} style={styles.option}>
-                  <Text style={styles.buttonText}>{phr?.name.en}</Text>
-                  <ActionButton
-                    buttonText={'Pick'}
-                    icon={<Arrow />}
-                    onPress={() => alert('Pick a solution.')}
-                    textColor={styles.actionButtonText}
-                  />
-                </View>
-              );
-            })}
-        </View>
-      </View>
+        <FlatList
+          data={sortedPhrases && sortedPhrases}
+          renderItem={({item}) => (
+            <ListItem
+              name={item?.name?.en}
+              buttonText={'Pick'}
+              icon={<Arrow />}
+              textColor={styles.actionButtonText}
+              onPress={() =>
+                navigation.navigate('Correct', {
+                  item,
+                })
+              }
+            />
+          )}
+          keyExtractor={(item, index) => index}
+        />
+      </SafeAreaView>
     </View>
   );
 }
