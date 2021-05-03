@@ -4,7 +4,6 @@ import {useNavigation} from '@react-navigation/native';
 
 import ToolButton from '../ToolButton/ToolButton';
 import LanguageSwitcherButton from '../LanguageSwitcherButton/LanguageSwitcherButton';
-import ActionButton from '../ActionButton/ActionButton';
 import SectionHeading from '../SectionHeading/SectionHeading';
 import PhraseTextArea from '../PhraseTextArea/PhraseTextArea';
 import ListItem from '../ListItem/ListItem';
@@ -143,8 +142,6 @@ export default function DisplayPhrases({route}) {
     return 0;
   });
 
-  console.log(sortedPhrases);
-
   return (
     <View style={styles.container}>
       <View style={styles.buttonWrapper}>
@@ -192,11 +189,12 @@ export default function DisplayPhrases({route}) {
               onPress={() =>
                 navigation.navigate('Correct', {
                   item,
+                  otherParam: FindPhrase,
                 })
               }
             />
           )}
-          keyExtractor={(item, index) => index}
+          keyExtractor={item => item?.id}
         />
       </SafeAreaView>
     </View>

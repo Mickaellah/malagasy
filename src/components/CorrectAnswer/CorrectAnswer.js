@@ -1,12 +1,14 @@
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, SafeAreaView, FlatList, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+
+import {useCorrectPhrase} from './correctPhrases';
 
 import ToolButton from '../ToolButton/ToolButton';
 import LanguageSwitcherButton from '../LanguageSwitcherButton/LanguageSwitcherButton';
-import ActionButton from '../ActionButton/ActionButton';
 import SectionHeading from '../SectionHeading/SectionHeading';
 import PhraseTextArea from '../PhraseTextArea/PhraseTextArea';
+import ListItem from '../ListItem/ListItem';
 
 import Chevron from '../../icons/chevron-left.svg';
 import Display from '../../icons/display.svg';
@@ -14,6 +16,11 @@ import LanguageSwitcher from '../../icons/language-switcher.svg';
 import Arrow from '../../icons/arrow.svg';
 
 const styles = StyleSheet.create({
+  container: {
+    margin: 0,
+    paddingHorizontal: 23,
+    paddingVertical: 35,
+  },
   buttonWrapper: {
     flexDirection: 'row',
   },
@@ -31,12 +38,121 @@ const styles = StyleSheet.create({
   languageSwither: {
     marginLeft: 10,
   },
+  categoryHeading: {
+    marginTop: 66,
+    marginRight: 0,
+    marginBottom: 0,
+    marginLeft: 0,
+    flexDirection: 'row',
+    textAlignVertical: 'center',
+  },
+  title: {
+    fontSize: 18,
+    lineHeight: 22,
+    fontWeight: '400',
+  },
+  phrasesHeading: {
+    marginTop: 30,
+    marginRight: 0,
+    marginBottom: 0,
+    marginLeft: 0,
+  },
+  solutionHeading: {
+    marginTop: 37,
+    marginRight: 0,
+    marginBottom: 0,
+    marginLeft: 0,
+  },
+  optionsWrapper: {
+    backgroundColor: '#ffffff',
+    borderColor: '#E5E5E5',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderBottomWidth: 0,
+  },
+  option: {
+    margin: 0,
+    paddingHorizontal: 16,
+    paddingVertical: 17,
+    borderStyle: 'solid',
+    borderBottomColor: '#E5E5E5',
+    borderBottomWidth: 1,
+    fontSize: 16,
+    lineHeight: 19,
+    fontWeight: '400',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 19,
+    textAlignVertical: 'center',
+  },
+  actionButtonText: {
+    color: '#06B6D4',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 19,
+  },
 });
 
-export default function CorrectAnswer() {
+export default function CorrectAnswer({route}) {
+  const [randomOptions, setRandomOptions] = useState([]);
+
+  const {phrases, categories} = useCorrectPhrase();
+
+  const {otherParam} = route.params;
+  console.log(otherParam);
+
+  const categoryPhraseId =
+    categories && categories?.map(item => item.phrasesIds);
+
+  console.log(
+    categories &&
+      categories?.map(item =>
+        item?.map(cat => cat?.phrasesIds.includes(otherParam?.id)),
+      ),
+  );
+
+  const phraseIdsFromCategory =
+    categoryPhraseId &&
+    categoryPhraseId.find(phrId => phrId.includes(otherParam?.id));
+  console.log(phraseIdsFromCategory);
+
+  const randomPhrases = phrases.map(phr => phr);
+
+  const FindPhraseIds = randomPhrases.filter(item =>
+    phraseIdsFromCategory.includes(item.id),
+  );
+
+  function getRandomPhrases() {
+    const random =
+      FindPhraseIds[Math.floor(Math.random() * FindPhraseIds.length)];
+    const randomOpt1 =
+      FindPhraseIds[Math.floor(Math.random() * FindPhraseIds.length)];
+    const randomOpt2 =
+      FindPhraseIds[Math.floor(Math.random() * FindPhraseIds.length)];
+    const randomOpt3 =
+      FindPhraseIds[Math.floor(Math.random() * FindPhraseIds.length)];
+    const randomOptions = [random, randomOpt1, randomOpt2, randomOpt3];
+
+    setRandomOptions(randomOptions);
+  }
+
+  useEffect(() => {
+    getRandomPhrases();
+  }, [phrases]);
+
+  const sortedPhrases = randomOptions?.sort(function (a, b) {
+    if (a.name.en.toLowerCase() < b.name.en.toLowerCase()) return -1;
+    if (a.name.en.toLowerCase() > b.name.en.toLowerCase()) return 1;
+    return 0;
+  });
+
   const navigation = useNavigation();
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.buttonWrapper}>
         <ToolButton
           style={[styles.toolButtons, styles.arrowButton]}
@@ -57,6 +173,38 @@ export default function CorrectAnswer() {
           onPress={() => alert('The language has swithed!!')}
         />
       </View>
+      <View style={styles.categoryHeading}>
+        <SectionHeading title={'Category: '} />
+        <Text style={styles.title}>{otherParam?.name.en}</Text>
+      </View>
+      <View style={styles.phrasesHeading}>
+        <SectionHeading title={'The phrase: '} />
+        <PhraseTextArea
+          value={otherParam?.name?.mg}
+          multiline={true}
+          numberOfLines={3}
+        />
+      </View>
+      <SafeAreaView style={styles.solutionHeading}>
+        <SectionHeading title={'Pick a solution: '} />
+        <FlatList
+          data={sortedPhrases && sortedPhrases}
+          renderItem={({item}) => (
+            <ListItem
+              name={item?.name?.en}
+              buttonText={'Pick'}
+              icon={<Arrow />}
+              textColor={styles.actionButtonText}
+              onPress={() =>
+                navigation.navigate('Correct', {
+                  item,
+                })
+              }
+            />
+          )}
+          keyExtractor={(item, index) => index}
+        />
+      </SafeAreaView>
     </View>
   );
 }
