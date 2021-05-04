@@ -103,38 +103,33 @@ export default function CorrectAnswer({route}) {
   const {phrases, categories} = useCorrectPhrase();
 
   const {otherParam} = route.params;
-  console.log(otherParam);
 
-  const categoryPhraseId =
+  const phrasesIdsFromCategory =
     categories && categories?.map(item => item.phrasesIds);
 
-  console.log(
-    categories &&
-      categories?.map(item =>
-        item?.map(cat => cat?.phrasesIds.includes(otherParam?.id)),
-      ),
-  );
+  const getPhrasesIdsFromCategory =
+    phrasesIdsFromCategory &&
+    phrasesIdsFromCategory.find(phrId => phrId.includes(otherParam?.id));
+  const id = getPhrasesIdsFromCategory?.find(catId => catId === otherParam?.id);
 
-  const phraseIdsFromCategory =
-    categoryPhraseId &&
-    categoryPhraseId.find(phrId => phrId.includes(otherParam?.id));
-  console.log(phraseIdsFromCategory);
+  const getCategoryName =
+    categories &&
+    categories.filter(cat => cat.phrasesIds.find(phrId => phrId === id));
 
   const randomPhrases = phrases.map(phr => phr);
 
-  const FindPhraseIds = randomPhrases.filter(item =>
-    phraseIdsFromCategory.includes(item.id),
+  const getPhrases = randomPhrases.filter(item =>
+    getPhrasesIdsFromCategory.includes(item.id),
   );
 
   function getRandomPhrases() {
-    const random =
-      FindPhraseIds[Math.floor(Math.random() * FindPhraseIds.length)];
+    const random = getPhrases[Math.floor(Math.random() * getPhrases.length)];
     const randomOpt1 =
-      FindPhraseIds[Math.floor(Math.random() * FindPhraseIds.length)];
+      getPhrases[Math.floor(Math.random() * getPhrases.length)];
     const randomOpt2 =
-      FindPhraseIds[Math.floor(Math.random() * FindPhraseIds.length)];
+      getPhrases[Math.floor(Math.random() * getPhrases.length)];
     const randomOpt3 =
-      FindPhraseIds[Math.floor(Math.random() * FindPhraseIds.length)];
+      getPhrases[Math.floor(Math.random() * getPhrases.length)];
     const randomOptions = [random, randomOpt1, randomOpt2, randomOpt3];
 
     setRandomOptions(randomOptions);
@@ -175,7 +170,9 @@ export default function CorrectAnswer({route}) {
       </View>
       <View style={styles.categoryHeading}>
         <SectionHeading title={'Category: '} />
-        <Text style={styles.title}>{otherParam?.name.en}</Text>
+        <Text style={styles.title}>
+          {getCategoryName.map(ph => ph.name.en)}
+        </Text>
       </View>
       <View style={styles.phrasesHeading}>
         <SectionHeading title={'The phrase: '} />
@@ -195,11 +192,11 @@ export default function CorrectAnswer({route}) {
               buttonText={'Pick'}
               icon={<Arrow />}
               textColor={styles.actionButtonText}
-              onPress={() =>
-                navigation.navigate('Correct', {
-                  item,
-                })
-              }
+              // onPress={() =>
+              //   navigation.navigate('Correct', {
+              //     item,
+              //   })
+              // }
             />
           )}
           keyExtractor={(item, index) => index}

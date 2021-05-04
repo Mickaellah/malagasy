@@ -14,6 +14,7 @@ import Chevron from '../../icons/chevron-left.svg';
 import Display from '../../icons/display.svg';
 import LanguageSwitcher from '../../icons/language-switcher.svg';
 import Arrow from '../../icons/arrow.svg';
+import Correct from '../../icons/correct.svg';
 
 const styles = StyleSheet.create({
   container: {
@@ -95,22 +96,31 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     lineHeight: 19,
   },
+  correctButtonText: {
+    color: '#06D440',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 19,
+  },
 });
 
 export default function DisplayPhrases({route}) {
   const [randomOptions, setRandomOptions] = useState([]);
+  const [randomPhrase, setRandomPhrase] = useState({});
+  const [isCorrect, setIsCorrect] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
 
   const {phrases, phraseId} = usePhrasesList();
 
-  const FindPhrase = phraseId.find(
+  const findPhrase = phraseId.find(
     phr => phr.id === route.params.item.phrasesIds.find(phrId => phrId),
   );
 
-  const categoryPhraseId = route.params.item.phrasesIds;
+  const categoryPhrasesIds = route.params.item.phrasesIds;
 
   const randomPhrases = phrases.map(phr => phr);
 
-  const phraseIdsFromCategory = categoryPhraseId.map(phrId => phrId);
+  const phraseIdsFromCategory = categoryPhrasesIds.map(phrId => phrId);
 
   const FindPhraseIds = randomPhrases.filter(item =>
     phraseIdsFromCategory.includes(item.id),
@@ -128,11 +138,21 @@ export default function DisplayPhrases({route}) {
     const randomOptions = [random, randomOpt1, randomOpt2, randomOpt3];
 
     setRandomOptions(randomOptions);
+    setRandomPhrase(random);
   }
 
   useEffect(() => {
     getRandomPhrases();
   }, [phrases]);
+
+  function checkAnswer() {
+    setIsClicked(true);
+    if (!isClicked && !isCorrect) {
+      setIsCorrect(true);
+    } else {
+      setIsCorrect(false);
+    }
+  }
 
   const navigation = useNavigation();
 
@@ -171,27 +191,41 @@ export default function DisplayPhrases({route}) {
       <View style={styles.phrasesHeading}>
         <SectionHeading title={'The phrase: '} />
         <PhraseTextArea
-          value={FindPhrase?.name?.mg}
+          value={findPhrase?.name?.mg}
           multiline={true}
           numberOfLines={3}
         />
       </View>
       <SafeAreaView style={styles.solutionHeading}>
         <SectionHeading title={'Pick a solution: '} />
+        {/* {isClicked && isCorrect ? ( */}
         <FlatList
           data={sortedPhrases && sortedPhrases}
           renderItem={({item}) => (
             <ListItem
               name={item?.name?.en}
-              buttonText={'Pick'}
-              icon={<Arrow />}
-              textColor={styles.actionButtonText}
-              onPress={() =>
+              buttonText={
+                isClicked === true && isCorrect === true ? 'Correct' : 'Pick'
+              }
+              icon={
+                isClicked === true && isCorrect === true ? (
+                  <Correct />
+                ) : (
+                  <Arrow />
+                )
+              }
+              textColor={
+                isClicked === true && isCorrect === true
+                  ? styles.correctButtonText
+                  : styles.correctButtonText
+              }
+              onPress={() => {
+                checkAnswer(item?.id);
                 navigation.navigate('Correct', {
                   item,
-                  otherParam: FindPhrase,
-                })
-              }
+                  otherParam: findPhrase,
+                });
+              }}
             />
           )}
           keyExtractor={item => item?.id}
