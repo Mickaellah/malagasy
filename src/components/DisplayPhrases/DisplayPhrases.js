@@ -147,7 +147,7 @@ export default function DisplayPhrases({route}) {
 
   function checkAnswer() {
     setIsClicked(true);
-    if (!isClicked && !isCorrect) {
+    if (!isCorrect) {
       setIsCorrect(true);
     } else {
       setIsCorrect(false);
@@ -198,24 +198,15 @@ export default function DisplayPhrases({route}) {
       </View>
       <SafeAreaView style={styles.solutionHeading}>
         <SectionHeading title={'Pick a solution: '} />
-        {/* {isClicked && isCorrect ? ( */}
         <FlatList
           data={sortedPhrases && sortedPhrases}
           renderItem={({item}) => (
             <ListItem
               name={item?.name?.en}
-              buttonText={
-                isClicked === true && isCorrect === true ? 'Correct' : 'Pick'
-              }
-              icon={
-                isClicked === true && isCorrect === true ? (
-                  <Correct />
-                ) : (
-                  <Arrow />
-                )
-              }
+              buttonText={isClicked && isCorrect ? 'Correct' : 'Pick'}
+              icon={isClicked && isCorrect ? <Correct /> : <Arrow />}
               textColor={
-                isClicked === true && isCorrect === true
+                isClicked && isCorrect
                   ? styles.correctButtonText
                   : styles.correctButtonText
               }
