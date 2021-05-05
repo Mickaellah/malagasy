@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {View, StyleSheet} from 'react-native';
 
 import {storiesOf} from '@storybook/react-native';
 import List from './List';
-import data from '../../data/categories.json';
 
 const styles = StyleSheet.create({
   container: {
@@ -16,18 +15,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#E5E5E5',
   },
 });
-
-export const useList = () => {
-  const [list, setList] = useState([]);
-
-  useEffect(() => {
-    setList(data.categories);
-  }, []);
-
-  return {
-    list,
-  };
-};
 
 export const Separator = () => <View style={styles.separator} />;
 

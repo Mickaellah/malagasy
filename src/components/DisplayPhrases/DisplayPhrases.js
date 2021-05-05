@@ -8,7 +8,7 @@ import SectionHeading from '../SectionHeading/SectionHeading';
 import PhraseTextArea from '../PhraseTextArea/PhraseTextArea';
 import ListItem from '../ListItem/ListItem';
 
-import {usePhrasesList, Separator} from './phrases';
+import {useData, Separator} from '../../StateManagement/useData';
 
 import Chevron from '../../icons/chevron-left.svg';
 import Display from '../../icons/display.svg';
@@ -110,7 +110,7 @@ export default function DisplayPhrases({route}) {
   const [isCorrect, setIsCorrect] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
 
-  const {phrases, phraseId} = usePhrasesList();
+  const {phrases, phraseId} = useData();
 
   const findPhrase = phraseId.find(
     phr => phr.id === route.params.item.phrasesIds.find(phrId => phrId),
@@ -125,6 +125,8 @@ export default function DisplayPhrases({route}) {
   const FindPhraseIds = randomPhrases.filter(item =>
     phraseIdsFromCategory.includes(item.id),
   );
+
+  console.log(FindPhraseIds);
 
   function getRandomPhrases() {
     const random =
@@ -208,7 +210,7 @@ export default function DisplayPhrases({route}) {
               textColor={
                 isClicked && isCorrect
                   ? styles.correctButtonText
-                  : styles.correctButtonText
+                  : styles.actionButtonText
               }
               onPress={() => {
                 checkAnswer(item?.id);
@@ -219,7 +221,7 @@ export default function DisplayPhrases({route}) {
               }}
             />
           )}
-          keyExtractor={item => item?.id}
+          keyExtractor={(item, index) => index}
         />
       </SafeAreaView>
     </View>

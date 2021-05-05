@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import PhrasesData from '../../data/phrases.json';
-import CategoriesData from '../../data/categories.json';
+import CategoriesData from '../data/categories.json';
+import PhrasesData from '../data/phrases.json';
 
 const styles = StyleSheet.create({
   separator: {
@@ -15,7 +15,7 @@ export const Separator = () => {
   return <View style={styles.separator} />;
 };
 
-export const useCorrectPhrase = () => {
+export const useData = () => {
   const [phrases, setPhrases] = useState([]);
   const [categories, setCategories] = useState([]);
 
@@ -28,7 +28,7 @@ export const useCorrectPhrase = () => {
 
   return {
     phrases,
-    categories,
     phraseId,
+    categories,
   };
 };

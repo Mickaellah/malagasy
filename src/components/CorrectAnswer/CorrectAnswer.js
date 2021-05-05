@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, SafeAreaView, FlatList, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
-import {useCorrectPhrase} from './correctPhrases';
+import {useData} from '../../StateManagement/useData';
 
 import ToolButton from '../ToolButton/ToolButton';
 import LanguageSwitcherButton from '../LanguageSwitcherButton/LanguageSwitcherButton';
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
 export default function CorrectAnswer({route}) {
   const [randomOptions, setRandomOptions] = useState([]);
 
-  const {phrases, categories} = useCorrectPhrase();
+  const {phrases, categories} = useData();
 
   const {otherParam} = route.params;
 
