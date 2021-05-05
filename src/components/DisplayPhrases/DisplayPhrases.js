@@ -14,7 +14,6 @@ import Chevron from '../../icons/chevron-left.svg';
 import Display from '../../icons/display.svg';
 import LanguageSwitcher from '../../icons/language-switcher.svg';
 import Arrow from '../../icons/arrow.svg';
-import Correct from '../../icons/correct.svg';
 
 const styles = StyleSheet.create({
   container: {
@@ -96,37 +95,48 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     lineHeight: 19,
   },
-  correctButtonText: {
-    color: '#06D440',
-    fontSize: 16,
-    fontWeight: '400',
-    lineHeight: 19,
-  },
 });
 
 export default function DisplayPhrases({route}) {
   const [randomOptions, setRandomOptions] = useState([]);
   const [randomPhrase, setRandomPhrase] = useState({});
-  const [isCorrect, setIsCorrect] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
 
-  const {phrases, phraseId} = useData();
+  const {phrases, phraseId, isCorrect, setIsCorrect} = useData();
 
   const findPhrase = phraseId.find(
-    phr => phr.id === route.params.item.phrasesIds.find(phrId => phrId),
+    phr => phr.id === route?.params?.item?.phrasesIds?.find(phrId => phrId),
   );
 
-  const categoryPhrasesIds = route.params.item.phrasesIds;
+  const categoryPhrasesIds = route?.params?.item?.phrasesIds;
+  console.log(route?.params?.item);
 
   const randomPhrases = phrases.map(phr => phr);
 
-  const phraseIdsFromCategory = categoryPhrasesIds.map(phrId => phrId);
+  const phraseIdsFromCategory = categoryPhrasesIds?.map(phrId => phrId);
 
   const FindPhraseIds = randomPhrases.filter(item =>
-    phraseIdsFromCategory.includes(item.id),
+    phraseIdsFromCategory?.includes(item.id),
   );
 
   console.log(FindPhraseIds);
+  console.log(
+    FindPhraseIds.filter(
+      phr => phr.id === route?.params?.item?.phrasesIds?.find(id => id),
+    ),
+  );
+
+  function checkAnswer() {
+    if (
+      FindPhraseIds.filter(
+        phr => phr.id === route?.params?.item?.phrasesIds?.find(id => id),
+      ) &&
+      isCorrect
+    ) {
+      setIsCorrect(true);
+    } else {
+      setIsCorrect(false);
+    }
+  }
 
   function getRandomPhrases() {
     const random =
@@ -146,15 +156,6 @@ export default function DisplayPhrases({route}) {
   useEffect(() => {
     getRandomPhrases();
   }, [phrases]);
-
-  function checkAnswer() {
-    setIsClicked(true);
-    if (!isCorrect) {
-      setIsCorrect(true);
-    } else {
-      setIsCorrect(false);
-    }
-  }
 
   const navigation = useNavigation();
 
@@ -188,7 +189,7 @@ export default function DisplayPhrases({route}) {
       </View>
       <View style={styles.categoryHeading}>
         <SectionHeading title={'Category: '} />
-        <Text style={styles.title}>{route.params.item.name.en}</Text>
+        <Text style={styles.title}>{route?.params?.item?.name?.en}</Text>
       </View>
       <View style={styles.phrasesHeading}>
         <SectionHeading title={'The phrase: '} />
@@ -205,13 +206,9 @@ export default function DisplayPhrases({route}) {
           renderItem={({item}) => (
             <ListItem
               name={item?.name?.en}
-              buttonText={isClicked && isCorrect ? 'Correct' : 'Pick'}
-              icon={isClicked && isCorrect ? <Correct /> : <Arrow />}
-              textColor={
-                isClicked && isCorrect
-                  ? styles.correctButtonText
-                  : styles.actionButtonText
-              }
+              buttonText={'Pick'}
+              icon={<Arrow />}
+              textColor={styles.actionButtonText}
               onPress={() => {
                 checkAnswer(item?.id);
                 navigation.navigate('Correct', {

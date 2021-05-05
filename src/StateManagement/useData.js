@@ -18,11 +18,20 @@ export const Separator = () => {
 export const useData = () => {
   const [phrases, setPhrases] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [isCorrect, setIsCorrect] = useState(true);
 
   useEffect(() => {
     setPhrases(PhrasesData.phrases);
     setCategories(CategoriesData.categories);
   }, []);
+
+  function checkAnswer() {
+    if (isCorrect) {
+      setIsCorrect(isCorrect);
+    } else {
+      setIsCorrect(!isCorrect);
+    }
+  }
 
   const phraseId = phrases.filter(phr => phr.id);
 
@@ -30,5 +39,8 @@ export const useData = () => {
     phrases,
     phraseId,
     categories,
+    isCorrect,
+    setIsCorrect,
+    checkAnswer,
   };
 };

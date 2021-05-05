@@ -9,17 +9,20 @@ import LanguageSwitcherButton from '../LanguageSwitcherButton/LanguageSwitcherBu
 import SectionHeading from '../SectionHeading/SectionHeading';
 import PhraseTextArea from '../PhraseTextArea/PhraseTextArea';
 import ListItem from '../ListItem/ListItem';
+import NextButton from '../NextButton/NextButton';
 
 import Chevron from '../../icons/chevron-left.svg';
 import Display from '../../icons/display.svg';
 import LanguageSwitcher from '../../icons/language-switcher.svg';
 import Arrow from '../../icons/arrow.svg';
+import Correct from '../../icons/correct.svg';
 
 const styles = StyleSheet.create({
   container: {
     margin: 0,
     paddingHorizontal: 23,
     paddingVertical: 35,
+    marginBottom: 90,
   },
   buttonWrapper: {
     flexDirection: 'row',
@@ -95,12 +98,34 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     lineHeight: 19,
   },
+  correctButtonText: {
+    color: '#06D440',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 19,
+  },
+  buttons: {
+    borderRadius: 30,
+    paddingTop: 11,
+    paddingBottom: 10,
+    paddingLeft: 27,
+    paddingRight: 31,
+    fontSize: 16,
+    fontWeight: '600',
+    lineHeight: 19,
+    backgroundColor: '#06B6D4',
+    marginTop: 60,
+  },
+  nextButtonText: {
+    color: '#ffffff',
+  },
 });
 
 export default function CorrectAnswer({route}) {
   const [randomOptions, setRandomOptions] = useState([]);
+  const [randomPhrase, setRandomPhrase] = useState({});
 
-  const {phrases, categories} = useData();
+  const {phrases, categories, isCorrect, setIsCorrect} = useData();
 
   const {otherParam} = route.params;
 
@@ -122,6 +147,8 @@ export default function CorrectAnswer({route}) {
     getPhrasesIdsFromCategory.includes(item.id),
   );
 
+  // console.log(getPhrases.filter(item => item.id === otherParam?.id));
+
   function getRandomPhrases() {
     const random = getPhrases[Math.floor(Math.random() * getPhrases.length)];
     const randomOpt1 =
@@ -133,6 +160,7 @@ export default function CorrectAnswer({route}) {
     const randomOptions = [random, randomOpt1, randomOpt2, randomOpt3];
 
     setRandomOptions(randomOptions);
+    setRandomPhrase(random);
   }
 
   useEffect(() => {
@@ -189,19 +217,27 @@ export default function CorrectAnswer({route}) {
           renderItem={({item}) => (
             <ListItem
               name={item?.name?.en}
-              buttonText={'Pick'}
-              icon={<Arrow />}
-              textColor={styles.actionButtonText}
-              // onPress={() =>
-              //   navigation.navigate('Correct', {
-              //     item,
-              //   })
-              // }
+              buttonText={isCorrect ? 'Correct' : 'Pick'}
+              icon={isCorrect ? <Correct /> : <Arrow />}
+              textColor={
+                isCorrect ? styles.correctButtonText : styles.actionButtonText
+              }
             />
           )}
           keyExtractor={(item, index) => index}
         />
       </SafeAreaView>
+      <View>
+        <NextButton
+          style={styles.buttons}
+          textColor={styles.nextButtonText}
+          title={'Next'}
+          onPress={() => {
+            getRandomPhrases();
+            setIsCorrect(false);
+          }}
+        />
+      </View>
     </View>
   );
 }
