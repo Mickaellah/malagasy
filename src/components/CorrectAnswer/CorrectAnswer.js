@@ -166,12 +166,6 @@ export default function CorrectAnswer({route}) {
       getPhrases[Math.floor(Math.random() * getPhrases.length)];
     const randomOptions = [random, randomOpt1, randomOpt2, randomOpt3];
 
-    // const options = [
-    //   ...new Map(
-    //     randomOptions.map(item => [JSON.stringify(item), item]),
-    //   ).values(),
-    // ];
-
     setRandomOptions(randomOptions);
     setRandomPhrase(random);
   }
@@ -180,7 +174,7 @@ export default function CorrectAnswer({route}) {
     getRandomPhrases();
   }, [phrases]);
 
-  const sortedPhrases = [...randomOptions]?.sort(function (a, b) {
+  const sortedPhrases = randomOptions?.sort(function (a, b) {
     if (a.name.en.toLowerCase() < b.name.en.toLowerCase()) return -1;
     if (a.name.en.toLowerCase() > b.name.en.toLowerCase()) return 1;
     return 0;
