@@ -127,8 +127,6 @@ export default function DisplayPhrases({route}) {
     phr => phr.id === route?.params?.item?.phrasesIds?.find(id => id),
   );
 
-  console.log(correctAnswer);
-
   function checkAnswer() {
     if (correctAnswer) {
       setIsCorrect(true);
@@ -228,7 +226,7 @@ export default function DisplayPhrases({route}) {
               textColor={styles.actionButtonText}
               onPress={() => {
                 checkAnswer();
-                isCorrect
+                correctAnswer
                   ? navigation.navigate('Correct', {
                       item,
                       otherParam: findPhrasesById,
