@@ -125,7 +125,7 @@ export default function CorrectAnswer({route}) {
   const [randomOptions, setRandomOptions] = useState([]);
   const [randomPhrase, setRandomPhrase] = useState({});
 
-  const {phrases, categories, isCorrect, setIsCorrect} = useData();
+  const {phrases, categories, buttonText, isCorrect, setIsCorrect} = useData();
 
   const {otherParam} = route.params;
 
@@ -135,11 +135,16 @@ export default function CorrectAnswer({route}) {
   const getPhrasesIdsFromCategory =
     phrasesIdsFromCategory &&
     phrasesIdsFromCategory.find(phrId => phrId.includes(otherParam?.id));
-  const id = getPhrasesIdsFromCategory?.find(catId => catId === otherParam?.id);
+
+  const findCategoryId = getPhrasesIdsFromCategory?.find(
+    catId => catId === otherParam?.id,
+  );
 
   const getCategoryName =
     categories &&
-    categories.filter(cat => cat.phrasesIds.find(phrId => phrId === id));
+    categories.filter(cat =>
+      cat.phrasesIds.find(phrId => phrId === findCategoryId),
+    );
 
   const randomPhrases = phrases.map(phr => phr);
 
@@ -147,7 +152,9 @@ export default function CorrectAnswer({route}) {
     getPhrasesIdsFromCategory.includes(item.id),
   );
 
-  // console.log(getPhrases.filter(item => item.id === otherParam?.id));
+  // const findSelectedPhrase = getPhrases.filter(
+  //   item => item.id === otherParam?.id,
+  // );
 
   function getRandomPhrases() {
     const random = getPhrases[Math.floor(Math.random() * getPhrases.length)];
@@ -159,7 +166,13 @@ export default function CorrectAnswer({route}) {
       getPhrases[Math.floor(Math.random() * getPhrases.length)];
     const randomOptions = [random, randomOpt1, randomOpt2, randomOpt3];
 
-    setRandomOptions(randomOptions);
+    const options = [
+      ...new Map(
+        randomOptions.map(item => [JSON.stringify(item), item]),
+      ).values(),
+    ];
+
+    setRandomOptions(options);
     setRandomPhrase(random);
   }
 
@@ -217,11 +230,9 @@ export default function CorrectAnswer({route}) {
           renderItem={({item}) => (
             <ListItem
               name={item?.name?.en}
-              buttonText={isCorrect ? 'Correct' : 'Pick'}
-              icon={isCorrect ? <Correct /> : <Arrow />}
-              textColor={
-                isCorrect ? styles.correctButtonText : styles.actionButtonText
-              }
+              buttonText={buttonText}
+              icon={<Arrow />}
+              textColor={styles.actionButtonText}
             />
           )}
           keyExtractor={(item, index) => index}

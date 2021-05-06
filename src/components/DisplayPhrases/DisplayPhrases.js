@@ -101,55 +101,76 @@ export default function DisplayPhrases({route}) {
   const [randomOptions, setRandomOptions] = useState([]);
   const [randomPhrase, setRandomPhrase] = useState({});
 
-  const {phrases, phraseId, isCorrect, setIsCorrect} = useData();
+  const {
+    phrases,
+    isCorrect,
+    setIsCorrect,
+    buttonText,
+    setButtonText,
+  } = useData();
 
-  const findPhrase = phraseId.find(
+  const findPhrasesById = phrases.find(
     phr => phr.id === route?.params?.item?.phrasesIds?.find(phrId => phrId),
   );
 
   const categoryPhrasesIds = route?.params?.item?.phrasesIds;
-  console.log(route?.params?.item);
 
   const randomPhrases = phrases.map(phr => phr);
 
-  const phraseIdsFromCategory = categoryPhrasesIds?.map(phrId => phrId);
+  const getPhraseIdsFromCategory = categoryPhrasesIds?.map(phrId => phrId);
 
-  const FindPhraseIds = randomPhrases.filter(item =>
-    phraseIdsFromCategory?.includes(item.id),
+  const getRandomPhrasesFromCategoryPhrasesIds = randomPhrases.filter(item =>
+    getPhraseIdsFromCategory?.includes(item.id),
   );
 
-  console.log(FindPhraseIds);
-  console.log(
-    FindPhraseIds.filter(
-      phr => phr.id === route?.params?.item?.phrasesIds?.find(id => id),
-    ),
+  const correctAnswer = getRandomPhrasesFromCategoryPhrasesIds.filter(
+    phr => phr.id === route?.params?.item?.phrasesIds?.find(id => id),
   );
 
   function checkAnswer() {
-    if (
-      FindPhraseIds.filter(
-        phr => phr.id === route?.params?.item?.phrasesIds?.find(id => id),
-      ) &&
-      isCorrect
-    ) {
+    if (!isCorrect) {
       setIsCorrect(true);
+      setButtonText('Correct');
     } else {
       setIsCorrect(false);
+      setButtonText('Pick');
     }
   }
 
   function getRandomPhrases() {
     const random =
-      FindPhraseIds[Math.floor(Math.random() * FindPhraseIds.length)];
+      getRandomPhrasesFromCategoryPhrasesIds[
+        Math.floor(
+          Math.random() * getRandomPhrasesFromCategoryPhrasesIds.length,
+        )
+      ];
     const randomOpt1 =
-      FindPhraseIds[Math.floor(Math.random() * FindPhraseIds.length)];
+      getRandomPhrasesFromCategoryPhrasesIds[
+        Math.floor(
+          Math.random() * getRandomPhrasesFromCategoryPhrasesIds.length,
+        )
+      ];
     const randomOpt2 =
-      FindPhraseIds[Math.floor(Math.random() * FindPhraseIds.length)];
+      getRandomPhrasesFromCategoryPhrasesIds[
+        Math.floor(
+          Math.random() * getRandomPhrasesFromCategoryPhrasesIds.length,
+        )
+      ];
     const randomOpt3 =
-      FindPhraseIds[Math.floor(Math.random() * FindPhraseIds.length)];
+      getRandomPhrasesFromCategoryPhrasesIds[
+        Math.floor(
+          Math.random() * getRandomPhrasesFromCategoryPhrasesIds.length,
+        )
+      ];
     const randomOptions = [random, randomOpt1, randomOpt2, randomOpt3];
 
-    setRandomOptions(randomOptions);
+    const options = [
+      ...new Map(
+        randomOptions.map(item => [JSON.stringify(item), item]),
+      ).values(),
+    ];
+
+    setRandomOptions(options);
     setRandomPhrase(random);
   }
 
@@ -159,7 +180,7 @@ export default function DisplayPhrases({route}) {
 
   const navigation = useNavigation();
 
-  const sortedPhrases = randomOptions.sort(function (a, b) {
+  const sortedPhrasesByName = randomOptions.sort(function (a, b) {
     if (a.name.en.toLowerCase() < b.name.en.toLowerCase()) return -1;
     if (a.name.en.toLowerCase() > b.name.en.toLowerCase()) return 1;
     return 0;
@@ -194,7 +215,7 @@ export default function DisplayPhrases({route}) {
       <View style={styles.phrasesHeading}>
         <SectionHeading title={'The phrase: '} />
         <PhraseTextArea
-          value={findPhrase?.name?.mg}
+          value={findPhrasesById?.name?.mg}
           multiline={true}
           numberOfLines={3}
         />
@@ -202,7 +223,7 @@ export default function DisplayPhrases({route}) {
       <SafeAreaView style={styles.solutionHeading}>
         <SectionHeading title={'Pick a solution: '} />
         <FlatList
-          data={sortedPhrases && sortedPhrases}
+          data={sortedPhrasesByName && sortedPhrasesByName}
           renderItem={({item}) => (
             <ListItem
               name={item?.name?.en}
@@ -210,10 +231,10 @@ export default function DisplayPhrases({route}) {
               icon={<Arrow />}
               textColor={styles.actionButtonText}
               onPress={() => {
-                checkAnswer(item?.id);
+                checkAnswer();
                 navigation.navigate('Correct', {
                   item,
-                  otherParam: findPhrase,
+                  otherParam: findPhrasesById,
                 });
               }}
             />
