@@ -4,7 +4,9 @@ import {useNavigation} from '@react-navigation/native';
 
 import ListItem from '../ListItem/ListItem';
 import SectionHeading from '../SectionHeading/SectionHeading';
-import {useList, Separator} from './List.stories';
+import {useData} from '../../StateManagement/useData';
+
+import Arrow from '../../icons/arrow.svg';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,17 +16,19 @@ const styles = StyleSheet.create({
 });
 
 export default function List() {
-  const {list} = useList();
+  const {categories} = useData();
   const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.container}>
       <SectionHeading title={'Select a category: '} />
       <FlatList
-        data={list}
+        data={categories}
         renderItem={({item}) => (
           <ListItem
             name={item.name.en}
+            buttonText={'Learn'}
+            icon={<Arrow />}
             onPress={() =>
               navigation.navigate('Learning', {
                 item,
@@ -33,7 +37,6 @@ export default function List() {
           />
         )}
         keyExtractor={item => item.id}
-        ItemSeparatorComponent={() => <Separator />}
       />
     </SafeAreaView>
   );

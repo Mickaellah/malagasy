@@ -1,25 +1,28 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, FlatList, SafeAreaView, StyleSheet} from 'react-native';
+import {View, Text, SafeAreaView, FlatList, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+
+import {useData} from '../../StateManagement/useData';
 
 import ToolButton from '../ToolButton/ToolButton';
 import LanguageSwitcherButton from '../LanguageSwitcherButton/LanguageSwitcherButton';
 import SectionHeading from '../SectionHeading/SectionHeading';
 import PhraseTextArea from '../PhraseTextArea/PhraseTextArea';
 import ListItem from '../ListItem/ListItem';
-
-import {useData, Separator} from '../../StateManagement/useData';
+import NextButton from '../NextButton/NextButton';
 
 import Chevron from '../../icons/chevron-left.svg';
 import Display from '../../icons/display.svg';
 import LanguageSwitcher from '../../icons/language-switcher.svg';
 import Arrow from '../../icons/arrow.svg';
+import Correct from '../../icons/correct.svg';
 
 const styles = StyleSheet.create({
   container: {
     margin: 0,
     paddingHorizontal: 23,
     paddingVertical: 35,
+    marginBottom: 90,
   },
   buttonWrapper: {
     flexDirection: 'row',
@@ -95,75 +98,72 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     lineHeight: 19,
   },
+  correctButtonText: {
+    color: '#06D440',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 19,
+  },
+  buttons: {
+    borderRadius: 30,
+    paddingTop: 11,
+    paddingBottom: 10,
+    paddingLeft: 27,
+    paddingRight: 31,
+    fontSize: 16,
+    fontWeight: '600',
+    lineHeight: 19,
+    backgroundColor: '#06B6D4',
+    marginTop: 60,
+  },
+  nextButtonText: {
+    color: '#ffffff',
+  },
 });
 
-export default function DisplayPhrases({route}) {
+export default function CorrectAnswer({route}) {
   const [randomOptions, setRandomOptions] = useState([]);
   const [randomPhrase, setRandomPhrase] = useState({});
 
-  const {
-    phrases,
-    isCorrect,
-    setIsCorrect,
-    buttonText,
-    setButtonText,
-  } = useData();
+  const {phrases, categories, buttonText, isCorrect, setIsCorrect} = useData();
 
-  const findPhrasesById = phrases.find(
-    phr => phr.id === route?.params?.item?.phrasesIds?.find(phrId => phrId),
+  const {otherParam} = route.params;
+
+  const phrasesIdsFromCategory =
+    categories && categories?.map(item => item.phrasesIds);
+
+  const getPhrasesIdsFromCategory =
+    phrasesIdsFromCategory &&
+    phrasesIdsFromCategory.find(phrId => phrId.includes(otherParam?.id));
+
+  const findCategoryId = getPhrasesIdsFromCategory?.find(
+    catId => catId === otherParam?.id,
   );
 
-  const categoryPhrasesIds = route?.params?.item?.phrasesIds;
+  const getCategoryName =
+    categories &&
+    categories.filter(cat =>
+      cat.phrasesIds.find(phrId => phrId === findCategoryId),
+    );
 
   const randomPhrases = phrases.map(phr => phr);
 
-  const getPhraseIdsFromCategory = categoryPhrasesIds?.map(phrId => phrId);
-
-  const getRandomPhrasesFromCategoryPhrasesIds = randomPhrases.filter(item =>
-    getPhraseIdsFromCategory?.includes(item.id),
+  const getPhrases = randomPhrases.filter(item =>
+    getPhrasesIdsFromCategory.includes(item.id),
   );
 
-  const correctAnswer = getRandomPhrasesFromCategoryPhrasesIds.filter(
-    phr => phr.id === route?.params?.item?.phrasesIds?.find(id => id),
-  );
-
-  console.log(correctAnswer);
-
-  function checkAnswer() {
-    if (correctAnswer) {
-      setIsCorrect(true);
-      setButtonText('Correct');
-    } else {
-      setIsCorrect(false);
-      setButtonText('Pick');
-    }
-  }
+  // const findSelectedPhrase = getPhrases.filter(
+  //   item => item.id === otherParam?.id,
+  // );
 
   function getRandomPhrases() {
-    const random =
-      getRandomPhrasesFromCategoryPhrasesIds[
-        Math.floor(
-          Math.random() * getRandomPhrasesFromCategoryPhrasesIds.length,
-        )
-      ];
+    const random = getPhrases[Math.floor(Math.random() * getPhrases.length)];
     const randomOpt1 =
-      getRandomPhrasesFromCategoryPhrasesIds[
-        Math.floor(
-          Math.random() * getRandomPhrasesFromCategoryPhrasesIds.length,
-        )
-      ];
+      getPhrases[Math.floor(Math.random() * getPhrases.length)];
     const randomOpt2 =
-      getRandomPhrasesFromCategoryPhrasesIds[
-        Math.floor(
-          Math.random() * getRandomPhrasesFromCategoryPhrasesIds.length,
-        )
-      ];
+      getPhrases[Math.floor(Math.random() * getPhrases.length)];
     const randomOpt3 =
-      getRandomPhrasesFromCategoryPhrasesIds[
-        Math.floor(
-          Math.random() * getRandomPhrasesFromCategoryPhrasesIds.length,
-        )
-      ];
+      getPhrases[Math.floor(Math.random() * getPhrases.length)];
     const randomOptions = [random, randomOpt1, randomOpt2, randomOpt3];
 
     setRandomOptions(randomOptions);
@@ -174,14 +174,13 @@ export default function DisplayPhrases({route}) {
     getRandomPhrases();
   }, [phrases]);
 
-  const navigation = useNavigation();
-
-  const sortedPhrasesByName = randomOptions?.sort(function (a, b) {
+  const sortedPhrases = randomOptions?.sort(function (a, b) {
     if (a.name.en.toLowerCase() < b.name.en.toLowerCase()) return -1;
     if (a.name.en.toLowerCase() > b.name.en.toLowerCase()) return 1;
     return 0;
   });
 
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.buttonWrapper}>
@@ -205,12 +204,14 @@ export default function DisplayPhrases({route}) {
       </View>
       <View style={styles.categoryHeading}>
         <SectionHeading title={'Category: '} />
-        <Text style={styles.title}>{route?.params?.item?.name?.en}</Text>
+        <Text style={styles.title}>
+          {getCategoryName.map(ph => ph.name.en)}
+        </Text>
       </View>
       <View style={styles.phrasesHeading}>
         <SectionHeading title={'The phrase: '} />
         <PhraseTextArea
-          value={findPhrasesById?.name?.mg}
+          value={otherParam?.name?.mg}
           multiline={true}
           numberOfLines={3}
         />
@@ -218,26 +219,29 @@ export default function DisplayPhrases({route}) {
       <SafeAreaView style={styles.solutionHeading}>
         <SectionHeading title={'Pick a solution: '} />
         <FlatList
-          data={sortedPhrasesByName && sortedPhrasesByName}
+          data={sortedPhrases && sortedPhrases}
           renderItem={({item}) => (
             <ListItem
               name={item?.name?.en}
-              key={item?.name?.en}
               buttonText={buttonText}
               icon={<Arrow />}
               textColor={styles.actionButtonText}
-              onPress={() => {
-                checkAnswer();
-                navigation.navigate('Correct', {
-                  item,
-                  otherParam: findPhrasesById,
-                });
-              }}
             />
           )}
           keyExtractor={(item, index) => index}
         />
       </SafeAreaView>
+      <View>
+        <NextButton
+          style={styles.buttons}
+          textColor={styles.nextButtonText}
+          title={'Next'}
+          onPress={() => {
+            getRandomPhrases();
+            setIsCorrect(false);
+          }}
+        />
+      </View>
     </View>
   );
 }
