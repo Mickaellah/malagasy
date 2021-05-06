@@ -228,10 +228,15 @@ export default function DisplayPhrases({route}) {
               textColor={styles.actionButtonText}
               onPress={() => {
                 checkAnswer();
-                navigation.navigate('Correct', {
-                  item,
-                  otherParam: findPhrasesById,
-                });
+                isCorrect
+                  ? navigation.navigate('Correct', {
+                      item,
+                      otherParam: findPhrasesById,
+                    })
+                  : navigation.navigate('Incorrect', {
+                      item,
+                      otherParam: findPhrasesById,
+                    });
               }}
             />
           )}
