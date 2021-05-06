@@ -4,7 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 
 import ListItem from '../ListItem/ListItem';
 import SectionHeading from '../SectionHeading/SectionHeading';
-import {useData, Separator} from '../../StateManagement/useData';
+import {useData} from '../../StateManagement/useData';
 
 import Arrow from '../../icons/arrow.svg';
 
@@ -37,7 +37,6 @@ export default function List() {
           />
         )}
         keyExtractor={item => item.id}
-        ItemSeparatorComponent={() => <Separator />}
       />
     </SafeAreaView>
   );

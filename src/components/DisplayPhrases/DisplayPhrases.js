@@ -127,8 +127,10 @@ export default function DisplayPhrases({route}) {
     phr => phr.id === route?.params?.item?.phrasesIds?.find(id => id),
   );
 
+  console.log(correctAnswer);
+
   function checkAnswer() {
-    if (!isCorrect) {
+    if (correctAnswer) {
       setIsCorrect(true);
       setButtonText('Correct');
     } else {
@@ -164,13 +166,13 @@ export default function DisplayPhrases({route}) {
       ];
     const randomOptions = [random, randomOpt1, randomOpt2, randomOpt3];
 
-    const options = [
-      ...new Map(
-        randomOptions.map(item => [JSON.stringify(item), item]),
-      ).values(),
-    ];
+    // const options = [
+    //   ...new Map(
+    //     randomOptions.map(item => [JSON.stringify(item), item]),
+    //   ).values(),
+    // ];
 
-    setRandomOptions(options);
+    setRandomOptions(randomOptions);
     setRandomPhrase(random);
   }
 
@@ -180,7 +182,7 @@ export default function DisplayPhrases({route}) {
 
   const navigation = useNavigation();
 
-  const sortedPhrasesByName = randomOptions.sort(function (a, b) {
+  const sortedPhrasesByName = [...randomOptions].sort(function (a, b) {
     if (a.name.en.toLowerCase() < b.name.en.toLowerCase()) return -1;
     if (a.name.en.toLowerCase() > b.name.en.toLowerCase()) return 1;
     return 0;
@@ -203,7 +205,6 @@ export default function DisplayPhrases({route}) {
           style={styles.languageSwither}
           icon={<LanguageSwitcher />}
           english={'En'}
-          phrases
           malagasy={'Ma'}
           onPress={() => alert('The language has swithed!!')}
         />
@@ -227,7 +228,7 @@ export default function DisplayPhrases({route}) {
           renderItem={({item}) => (
             <ListItem
               name={item?.name?.en}
-              buttonText={'Pick'}
+              buttonText={buttonText}
               icon={<Arrow />}
               textColor={styles.actionButtonText}
               onPress={() => {
