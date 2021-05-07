@@ -125,17 +125,9 @@ export default function CorrectAnswer({route}) {
   const [randomOptions, setRandomOptions] = useState([]);
   const [randomPhrase, setRandomPhrase] = useState({});
 
-  const {
-    phrases,
-    categories,
-    buttonText,
-    setIsCorrect,
-    icon,
-    textColor,
-  } = useData();
+  const {phrases, categories, setIsCorrect} = useData();
 
   const {otherParam, parameter} = route.params;
-  console.log(parameter);
 
   const phrasesIdsFromCategory =
     categories && categories?.map(item => item.phrasesIds);

@@ -8,14 +8,12 @@ import SectionHeading from '../SectionHeading/SectionHeading';
 import PhraseTextArea from '../PhraseTextArea/PhraseTextArea';
 import ListItem from '../ListItem/ListItem';
 
-import {useData, Separator} from '../../StateManagement/useData';
+import {useData} from '../../StateManagement/useData';
 
 import Chevron from '../../icons/chevron-left.svg';
 import Display from '../../icons/display.svg';
 import LanguageSwitcher from '../../icons/language-switcher.svg';
 import Arrow from '../../icons/arrow.svg';
-import Correct from '../../icons/correct.svg';
-import Incorrect from '../../icons/wrong.svg';
 
 const styles = StyleSheet.create({
   container: {
@@ -97,38 +95,13 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     lineHeight: 19,
   },
-  correctButtonText: {
-    color: '#06D440',
-    fontSize: 16,
-    fontWeight: '400',
-    lineHeight: 19,
-  },
-  incorrectButtonText: {
-    color: '#D4068E',
-    fontSize: 16,
-    fontWeight: '400',
-    lineHeight: 19,
-  },
 });
 
 export default function DisplayPhrases({route}) {
   const [randomOptions, setRandomOptions] = useState([]);
   const [randomPhrase, setRandomPhrase] = useState({});
 
-  const {
-    phrases,
-    textRef,
-    isClicked,
-    setIsClicked,
-    isCorrect,
-    setIsCorrect,
-    buttonText,
-    setButtonText,
-    icon,
-    setIcon,
-    textColor,
-    setTextColor,
-  } = useData();
+  const {phrases, isClicked, setIsClicked, setIsCorrect} = useData();
 
   const findPhrasesById = phrases.find(
     phr => phr.id === route?.params?.item?.phrasesIds?.find(phrId => phrId),
@@ -161,21 +134,12 @@ export default function DisplayPhrases({route}) {
     if (validAnswer === true && !isClicked) {
       setIsClicked(true);
       setIsCorrect(true);
-      setButtonText('Correct');
-      setIcon(<Correct />);
-      setTextColor(styles.correctButtonText);
     } else if (validAnswer === false && !isClicked) {
       setIsClicked(true);
       setIsCorrect(false);
-      setButtonText('Wrong');
-      setIcon(<Incorrect />);
-      setTextColor(styles.IincorrectButtonText);
     } else {
       setIsClicked(false);
       setIsCorrect(false);
-      setButtonText('Pick');
-      setIcon(<Arrow />);
-      setTextColor(styles.actionButtonText);
     }
   }
 

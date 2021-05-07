@@ -125,17 +125,9 @@ export default function CorrectAnswer({route}) {
   const [randomOptions, setRandomOptions] = useState([]);
   const [randomPhrase, setRandomPhrase] = useState({});
 
-  const {
-    phrases,
-    categories,
-    buttonText,
-    setIsCorrect,
-    icon,
-    textColor,
-  } = useData();
+  const {phrases, categories, buttonText, setIsCorrect} = useData();
 
   const {otherParam, parameter} = route.params;
-  console.log(parameter);
 
   const phrasesIdsFromCategory =
     categories && categories?.map(item => item.phrasesIds);
@@ -159,10 +151,6 @@ export default function CorrectAnswer({route}) {
   const getPhrases = randomPhrases.filter(item =>
     getPhrasesIdsFromCategory.includes(item.id),
   );
-
-  // const findSelectedPhrase = getPhrases.filter(
-  //   item => item.id === otherParam?.id,
-  // );
 
   function getRandomPhrases() {
     const random = getPhrases[Math.floor(Math.random() * getPhrases.length)];

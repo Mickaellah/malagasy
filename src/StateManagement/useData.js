@@ -19,11 +19,6 @@ export const useData = () => {
   const [categories, setCategories] = useState([]);
   const [isClicked, setIsClicked] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  const [buttonText, setButtonText] = useState('Pick');
-  const [icon, setIcon] = useState(<Arrow />);
-  const [textColor, setTextColor] = useState(styles.actionButtonText);
-
-  const textRef = useRef(null);
 
   useEffect(() => {
     setPhrases(PhrasesData.phrases);
@@ -33,16 +28,9 @@ export const useData = () => {
   return {
     phrases,
     categories,
-    textRef,
     isClicked,
     setIsClicked,
     isCorrect,
     setIsCorrect,
-    buttonText,
-    setButtonText,
-    icon,
-    setIcon,
-    textColor,
-    setTextColor,
   };
 };
