@@ -26,26 +26,21 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     textAlignVertical: 'center',
   },
-  learnButtonColor: {
-    color: '#06B6D4',
-    fontSize: 16,
-    fontWeight: '400',
-    lineHeight: 19,
-  },
 });
 
-export default function ListItem({name, buttonText, icon, onPress}) {
+export default function ListItem({name, buttonText, textColor, icon, onPress}) {
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={onPress}>
         <View style={styles.wrapper}>
           <Text style={styles.text}>{name}</Text>
-          <ActionButton
-            buttonText={buttonText}
-            icon={icon}
-            textColor={styles.learnButtonColor}
-            onPress={onPress}
-          />
+          <TouchableWithoutFeedback onPress={onPress}>
+            <ActionButton
+              buttonText={buttonText}
+              icon={icon}
+              textColor={textColor}
+            />
+          </TouchableWithoutFeedback>
         </View>
       </TouchableWithoutFeedback>
     </View>

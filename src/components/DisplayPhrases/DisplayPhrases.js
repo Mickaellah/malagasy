@@ -14,6 +14,8 @@ import Chevron from '../../icons/chevron-left.svg';
 import Display from '../../icons/display.svg';
 import LanguageSwitcher from '../../icons/language-switcher.svg';
 import Arrow from '../../icons/arrow.svg';
+import Correct from '../../icons/correct.svg';
+import Incorrect from '../../icons/wrong.svg';
 
 const styles = StyleSheet.create({
   container: {
@@ -95,6 +97,18 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     lineHeight: 19,
   },
+  correctButtonText: {
+    color: '#06D440',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 19,
+  },
+  incorrectButtonText: {
+    color: '#D4068E',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 19,
+  },
 });
 
 export default function DisplayPhrases({route}) {
@@ -103,10 +117,17 @@ export default function DisplayPhrases({route}) {
 
   const {
     phrases,
+    textRef,
+    isClicked,
+    setIsClicked,
     isCorrect,
     setIsCorrect,
     buttonText,
     setButtonText,
+    icon,
+    setIcon,
+    textColor,
+    setTextColor,
   } = useData();
 
   const findPhrasesById = phrases.find(
@@ -127,13 +148,34 @@ export default function DisplayPhrases({route}) {
     phr => phr.id === route?.params?.item?.phrasesIds?.find(id => id),
   );
 
+  const selectedAnswer = randomOptions.map(item => item?.id);
+
+  const findValidAnswer = selectedAnswer.map(
+    id =>
+      JSON.stringify(id) == correctAnswer.map(item => JSON.stringify(item.id)),
+  );
+
+  const validAnswer = findValidAnswer.find(item => item === true);
+
   function checkAnswer() {
-    if (correctAnswer) {
+    if (validAnswer === true && !isClicked) {
+      setIsClicked(true);
       setIsCorrect(true);
       setButtonText('Correct');
+      setIcon(<Correct />);
+      setTextColor(styles.correctButtonText);
+    } else if (validAnswer === false && !isClicked) {
+      setIsClicked(true);
+      setIsCorrect(false);
+      setButtonText('Wrong');
+      setIcon(<Incorrect />);
+      setTextColor(styles.IincorrectButtonText);
     } else {
+      setIsClicked(false);
       setIsCorrect(false);
       setButtonText('Pick');
+      setIcon(<Arrow />);
+      setTextColor(styles.actionButtonText);
     }
   }
 
@@ -221,19 +263,21 @@ export default function DisplayPhrases({route}) {
             <ListItem
               name={item?.name?.en}
               key={item?.name?.en}
-              buttonText={buttonText}
+              buttonText={'Pick'}
               icon={<Arrow />}
               textColor={styles.actionButtonText}
               onPress={() => {
                 checkAnswer();
-                correctAnswer
+                validAnswer === true
                   ? navigation.navigate('Correct', {
                       item,
                       otherParam: findPhrasesById,
+                      parameter: validAnswer,
                     })
                   : navigation.navigate('Incorrect', {
                       item,
                       otherParam: findPhrasesById,
+                      parameter: validAnswer === false,
                     });
               }}
             />

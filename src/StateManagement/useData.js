@@ -1,12 +1,29 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
+import {StyleSheet} from 'react-native';
 import CategoriesData from '../data/categories.json';
 import PhrasesData from '../data/phrases.json';
+
+import Arrow from '../icons/arrow.svg';
+
+const styles = StyleSheet.create({
+  actionButtonText: {
+    color: '#06B6D4',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 19,
+  },
+});
 
 export const useData = () => {
   const [phrases, setPhrases] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [isClicked, setIsClicked] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [buttonText, setButtonText] = useState('Pick');
+  const [icon, setIcon] = useState(<Arrow />);
+  const [textColor, setTextColor] = useState(styles.actionButtonText);
+
+  const textRef = useRef(null);
 
   useEffect(() => {
     setPhrases(PhrasesData.phrases);
@@ -16,9 +33,16 @@ export const useData = () => {
   return {
     phrases,
     categories,
+    textRef,
+    isClicked,
+    setIsClicked,
     isCorrect,
     setIsCorrect,
     buttonText,
     setButtonText,
+    icon,
+    setIcon,
+    textColor,
+    setTextColor,
   };
 };

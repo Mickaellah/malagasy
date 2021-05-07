@@ -92,18 +92,6 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     textAlignVertical: 'center',
   },
-  actionButtonText: {
-    color: '#06B6D4',
-    fontSize: 16,
-    fontWeight: '400',
-    lineHeight: 19,
-  },
-  correctButtonText: {
-    color: '#06D440',
-    fontSize: 16,
-    fontWeight: '400',
-    lineHeight: 19,
-  },
   buttons: {
     borderRadius: 30,
     paddingTop: 11,
@@ -116,6 +104,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#06B6D4',
     marginTop: 60,
   },
+  actionButtonText: {
+    color: '#06B6D4',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 19,
+  },
+  correctButtonText: {
+    color: '#06D440',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 19,
+  },
   nextButtonText: {
     color: '#ffffff',
   },
@@ -125,9 +125,17 @@ export default function CorrectAnswer({route}) {
   const [randomOptions, setRandomOptions] = useState([]);
   const [randomPhrase, setRandomPhrase] = useState({});
 
-  const {phrases, categories, buttonText, isCorrect, setIsCorrect} = useData();
+  const {
+    phrases,
+    categories,
+    buttonText,
+    setIsCorrect,
+    icon,
+    textColor,
+  } = useData();
 
-  const {otherParam} = route.params;
+  const {otherParam, parameter} = route.params;
+  console.log(parameter);
 
   const phrasesIdsFromCategory =
     categories && categories?.map(item => item.phrasesIds);
@@ -223,9 +231,11 @@ export default function CorrectAnswer({route}) {
           renderItem={({item}) => (
             <ListItem
               name={item?.name?.en}
-              buttonText={buttonText}
-              icon={<Arrow />}
-              textColor={styles.actionButtonText}
+              buttonText={parameter ? 'Correct' : 'Pick'}
+              icon={parameter ? <Correct /> : <Arrow />}
+              textColor={
+                parameter ? styles.correctButtonText : styles.actionButtonText
+              }
             />
           )}
           keyExtractor={(item, index) => index}
