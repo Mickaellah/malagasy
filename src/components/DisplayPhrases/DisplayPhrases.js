@@ -137,7 +137,7 @@ export default function DisplayPhrases({route}) {
     } else if (validAnswer === false && !isClicked) {
       setIsClicked(true);
       setIsCorrect(false);
-    } else {
+    } else if (validAnswer === false && isClicked === false) {
       setIsClicked(false);
       setIsCorrect(false);
     }

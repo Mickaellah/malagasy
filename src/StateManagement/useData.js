@@ -1,18 +1,6 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {StyleSheet} from 'react-native';
+import {useEffect, useState} from 'react';
 import CategoriesData from '../data/categories.json';
 import PhrasesData from '../data/phrases.json';
-
-import Arrow from '../icons/arrow.svg';
-
-const styles = StyleSheet.create({
-  actionButtonText: {
-    color: '#06B6D4',
-    fontSize: 16,
-    fontWeight: '400',
-    lineHeight: 19,
-  },
-});
 
 export const useData = () => {
   const [phrases, setPhrases] = useState([]);
