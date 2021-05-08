@@ -128,7 +128,6 @@ export default function CorrectAnswer({route}) {
     setIsCorrect,
     randomOptions,
     setRandomOptions,
-    randomPhrase,
     setRandomPhrase,
   } = useData();
 
