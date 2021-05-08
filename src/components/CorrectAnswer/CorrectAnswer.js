@@ -122,10 +122,15 @@ const styles = StyleSheet.create({
 });
 
 export default function CorrectAnswer({route}) {
-  const [randomOptions, setRandomOptions] = useState([]);
-  const [randomPhrase, setRandomPhrase] = useState({});
-
-  const {phrases, categories, setIsCorrect} = useData();
+  const {
+    phrases,
+    categories,
+    setIsCorrect,
+    randomOptions,
+    setRandomOptions,
+    randomPhrase,
+    setRandomPhrase,
+  } = useData();
 
   const {otherParam, parameter, options, title} = route.params;
 
