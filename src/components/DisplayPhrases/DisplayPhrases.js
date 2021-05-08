@@ -101,7 +101,13 @@ export default function DisplayPhrases({route}) {
   const [randomOptions, setRandomOptions] = useState([]);
   const [randomPhrase, setRandomPhrase] = useState({});
 
-  const {phrases, isClicked, setIsClicked, setIsCorrect} = useData();
+  const {
+    phrases,
+    isClicked,
+    setIsClicked,
+    setIsCorrect,
+    categories,
+  } = useData();
 
   const findPhrasesById = phrases.find(
     phr => phr.id === route?.params?.item?.phrasesIds?.find(phrId => phrId),
@@ -109,12 +115,8 @@ export default function DisplayPhrases({route}) {
 
   const categoryPhrasesIds = route?.params?.item?.phrasesIds;
 
-  const randomPhrases = phrases.map(phr => phr);
-
-  const getPhraseIdsFromCategory = categoryPhrasesIds?.map(phrId => phrId);
-
-  const getRandomPhrasesFromCategoryPhrasesIds = randomPhrases.filter(item =>
-    getPhraseIdsFromCategory?.includes(item.id),
+  const getRandomPhrasesFromCategoryPhrasesIds = phrases.filter(item =>
+    categoryPhrasesIds?.includes(item.id),
   );
 
   const correctAnswer = getRandomPhrasesFromCategoryPhrasesIds.filter(
@@ -137,7 +139,7 @@ export default function DisplayPhrases({route}) {
     } else if (validAnswer === false && !isClicked) {
       setIsClicked(true);
       setIsCorrect(false);
-    } else if (validAnswer === false && isClicked === false) {
+    } else {
       setIsClicked(false);
       setIsCorrect(false);
     }

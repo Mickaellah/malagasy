@@ -237,8 +237,8 @@ export default function CorrectAnswer({route}) {
           textColor={styles.nextButtonText}
           title={'Next'}
           onPress={() => {
-            getRandomPhrases();
             setIsCorrect(false);
+            navigation.goBack();
           }}
         />
       </View>
