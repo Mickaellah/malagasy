@@ -92,18 +92,6 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     textAlignVertical: 'center',
   },
-  actionButtonText: {
-    color: '#06B6D4',
-    fontSize: 16,
-    fontWeight: '400',
-    lineHeight: 19,
-  },
-  correctButtonText: {
-    color: '#06D440',
-    fontSize: 16,
-    fontWeight: '400',
-    lineHeight: 19,
-  },
   buttons: {
     borderRadius: 30,
     paddingTop: 11,
@@ -116,18 +104,35 @@ const styles = StyleSheet.create({
     backgroundColor: '#06B6D4',
     marginTop: 60,
   },
+  actionButtonText: {
+    color: '#06B6D4',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 19,
+  },
+  correctButtonText: {
+    color: '#06D440',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 19,
+  },
   nextButtonText: {
     color: '#ffffff',
   },
 });
 
 export default function CorrectAnswer({route}) {
-  const [randomOptions, setRandomOptions] = useState([]);
-  const [randomPhrase, setRandomPhrase] = useState({});
+  const {
+    phrases,
+    categories,
+    setIsCorrect,
+    randomOptions,
+    setRandomOptions,
+    randomPhrase,
+    setRandomPhrase,
+  } = useData();
 
-  const {phrases, categories, buttonText, isCorrect, setIsCorrect} = useData();
-
-  const {otherParam} = route.params;
+  const {otherParam, parameter, options, title} = route.params;
 
   const phrasesIdsFromCategory =
     categories && categories?.map(item => item.phrasesIds);
@@ -151,10 +156,6 @@ export default function CorrectAnswer({route}) {
   const getPhrases = randomPhrases.filter(item =>
     getPhrasesIdsFromCategory.includes(item.id),
   );
-
-  // const findSelectedPhrase = getPhrases.filter(
-  //   item => item.id === otherParam?.id,
-  // );
 
   function getRandomPhrases() {
     const random = getPhrases[Math.floor(Math.random() * getPhrases.length)];
@@ -211,7 +212,7 @@ export default function CorrectAnswer({route}) {
       <View style={styles.phrasesHeading}>
         <SectionHeading title={'The phrase: '} />
         <PhraseTextArea
-          value={otherParam?.name?.mg}
+          value={title?.name?.mg}
           multiline={true}
           numberOfLines={3}
         />
@@ -223,9 +224,11 @@ export default function CorrectAnswer({route}) {
           renderItem={({item}) => (
             <ListItem
               name={item?.name?.en}
-              buttonText={buttonText}
-              icon={<Arrow />}
-              textColor={styles.actionButtonText}
+              buttonText={parameter ? 'Correct' : 'Pick'}
+              icon={parameter ? <Correct /> : <Arrow />}
+              textColor={
+                parameter ? styles.correctButtonText : styles.actionButtonText
+              }
             />
           )}
           keyExtractor={(item, index) => index}
@@ -237,8 +240,9 @@ export default function CorrectAnswer({route}) {
           textColor={styles.nextButtonText}
           title={'Next'}
           onPress={() => {
-            getRandomPhrases();
             setIsCorrect(false);
+            navigation.goBack();
+            () => options();
           }}
         />
       </View>

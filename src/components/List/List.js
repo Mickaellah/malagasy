@@ -13,6 +13,12 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
   },
+  buttonColor: {
+    color: '#06B6D4',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 19,
+  },
 });
 
 export default function List() {
@@ -26,6 +32,7 @@ export default function List() {
         data={categories}
         renderItem={({item}) => (
           <ListItem
+            textColor={styles.buttonColor}
             name={item.name.en}
             buttonText={'Learn'}
             icon={<Arrow />}
