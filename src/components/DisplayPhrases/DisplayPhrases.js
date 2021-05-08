@@ -124,8 +124,6 @@ export default function DisplayPhrases({route}) {
       Math.floor(Math.random() * phrasesFromCategoryPhrasesIds.length)
     ];
 
-  console.log(phrase);
-
   const getRandomPhrasesFromCategoryPhrasesIds = phrases.filter(item =>
     categoryPhrasesIds?.includes(item.id),
   );
