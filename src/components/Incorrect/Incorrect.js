@@ -127,7 +127,7 @@ export default function CorrectAnswer({route}) {
 
   const {phrases, categories, setIsCorrect} = useData();
 
-  const {otherParam, parameter} = route.params;
+  const {otherParam, parameter, options, title} = route.params;
 
   const phrasesIdsFromCategory =
     categories && categories?.map(item => item.phrasesIds);
@@ -207,7 +207,7 @@ export default function CorrectAnswer({route}) {
       <View style={styles.phrasesHeading}>
         <SectionHeading title={'The phrase: '} />
         <PhraseTextArea
-          value={otherParam?.name?.mg}
+          value={title?.name?.mg}
           multiline={true}
           numberOfLines={3}
         />
@@ -239,6 +239,7 @@ export default function CorrectAnswer({route}) {
           onPress={() => {
             setIsCorrect(false);
             navigation.goBack();
+            () => options();
           }}
         />
       </View>

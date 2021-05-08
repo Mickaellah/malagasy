@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, FlatList, SafeAreaView, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
@@ -98,15 +98,15 @@ const styles = StyleSheet.create({
 });
 
 export default function DisplayPhrases({route}) {
-  const [randomOptions, setRandomOptions] = useState([]);
-  const [randomPhrase, setRandomPhrase] = useState({});
-
   const {
     phrases,
     isClicked,
     setIsClicked,
     setIsCorrect,
-    categories,
+    randomOptions,
+    setRandomOptions,
+    randomPhrase,
+    setRandomPhrase,
   } = useData();
 
   const findPhrasesById = phrases.find(
@@ -114,6 +114,17 @@ export default function DisplayPhrases({route}) {
   );
 
   const categoryPhrasesIds = route?.params?.item?.phrasesIds;
+
+  const phrasesFromCategoryPhrasesIds = phrases.filter(item =>
+    categoryPhrasesIds.includes(item.id),
+  );
+
+  const phrase =
+    phrasesFromCategoryPhrasesIds[
+      Math.floor(Math.random() * phrasesFromCategoryPhrasesIds.length)
+    ];
+
+  console.log(phrase);
 
   const getRandomPhrasesFromCategoryPhrasesIds = phrases.filter(item =>
     categoryPhrasesIds?.includes(item.id),
@@ -216,7 +227,7 @@ export default function DisplayPhrases({route}) {
       <View style={styles.phrasesHeading}>
         <SectionHeading title={'The phrase: '} />
         <PhraseTextArea
-          value={findPhrasesById?.name?.mg}
+          value={phrase?.name?.mg}
           multiline={true}
           numberOfLines={3}
         />
@@ -239,11 +250,15 @@ export default function DisplayPhrases({route}) {
                       item,
                       otherParam: findPhrasesById,
                       parameter: validAnswer,
+                      options: getRandomPhrases(),
+                      title: phrase,
                     })
                   : navigation.navigate('Incorrect', {
                       item,
                       otherParam: findPhrasesById,
                       parameter: validAnswer === false,
+                      options: getRandomPhrases(),
+                      title: phrase,
                     });
               }}
             />
