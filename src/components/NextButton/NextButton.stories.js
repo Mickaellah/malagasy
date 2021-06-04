@@ -27,18 +27,19 @@ const styles = StyleSheet.create({
 storiesOf('Next  Button', module)
   .addDecorator(story => <View style={{paddingVertical: 20}}>{story()}</View>)
   .add('Next Button', () => {
+    // Right now, the font is not visible because it has the same color as the background
     return (
       <View>
         <NextButton
           title="Add"
           style={styles.blueButton}
-          textColor={styles.blueText}
+          textColor={styles.whiteText}
           onPress={() => alert('Button is clicked')}
         />
         <NextButton
           title="Add"
           style={styles.whiteButton}
-          textColor={styles.whiteText}
+          textColor={styles.blueText}
           onPress={() => alert('Button is clicked')}
         />
       </View>

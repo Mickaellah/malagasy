@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     lineHeight: 19,
   },
 });
-
+// You don't pass the text of the button.
 storiesOf('List item', module)
   .addDecorator(story => <View>{story()}</View>)
   .add('List item', () => (
