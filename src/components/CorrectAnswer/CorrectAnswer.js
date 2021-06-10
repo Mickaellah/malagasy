@@ -16,7 +16,7 @@ import Display from '../../icons/display.svg';
 import LanguageSwitcher from '../../icons/language-switcher.svg';
 import Arrow from '../../icons/arrow.svg';
 import Correct from '../../icons/correct.svg';
-
+// This does not have to be a separate screen, instead incorporate it into the learning screen to prevent duplications
 const styles = StyleSheet.create({
   container: {
     margin: 0,

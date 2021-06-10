@@ -27,7 +27,7 @@ export default function List() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <SectionHeading title={'Select a category: '} />
+      <SectionHeading title={'Select a category: This should be a prop '} />
       <FlatList
         data={categories}
         renderItem={({item}) => (
@@ -37,7 +37,7 @@ export default function List() {
             buttonText={'Learn'}
             icon={<Arrow />}
             onPress={() =>
-              navigation.navigate('Learning', {
+              navigation.navigate('Learning On press should also be a prop', {
                 item,
               })
             }

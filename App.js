@@ -5,7 +5,7 @@
  * @format
  * @flow strict-local
  */
-
+// This file should contain your own code, not the example given by react native.
 import React from 'react';
 import type {Node} from 'react';
 import {

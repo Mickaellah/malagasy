@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { Text, SafeAreaView } from 'react-native';
 // import { styles } from '../constants/globalStyles';
-
+// remove this example
 export default function Example({label}) {
 
   console.log(label);

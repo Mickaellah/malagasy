@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 });
 
 export default function LanguageSwitcherButton({
-  english,
+  english, // The component should not have to know about which languages it is dealing with, instead name it primary language + secndary language
   malagasy,
   onPress,
   icon,

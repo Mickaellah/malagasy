@@ -24,7 +24,7 @@ const Switcher = () => {
     if (malagasyLanguage) {
       setMalagasyLanguage(englishLanguage);
     }
-    alert('Languahe has switched!!!');
+    alert('Language has switched!!!');
   };
 
   return (

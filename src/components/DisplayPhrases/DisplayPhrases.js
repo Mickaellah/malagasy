@@ -14,7 +14,7 @@ import Chevron from '../../icons/chevron-left.svg';
 import Display from '../../icons/display.svg';
 import LanguageSwitcher from '../../icons/language-switcher.svg';
 import Arrow from '../../icons/arrow.svg';
-
+// This file should be in a separate screens folder, not the components directory (because its not a component)
 const styles = StyleSheet.create({
   container: {
     margin: 0,
@@ -154,7 +154,7 @@ export default function DisplayPhrases({route}) {
     }
   }
 
-  function getRandomPhrases() {
+  function getRandomPhrases() { // This algorith allows for duplicated answers, even of the correct one.
     const random =
       getRandomPhrasesFromCategoryPhrasesIds[
         Math.floor(
@@ -194,6 +194,7 @@ export default function DisplayPhrases({route}) {
   const sortedPhrasesByName = randomOptions?.sort(function (a, b) {
     if (a.name.en.toLowerCase() < b.name.en.toLowerCase()) return -1;
     if (a.name.en.toLowerCase() > b.name.en.toLowerCase()) return 1;
+    // a.name.en.toLowerCase() < b.name.en.toLowerCase() should be enough
     return 0;
   });
 
@@ -243,7 +244,7 @@ export default function DisplayPhrases({route}) {
               textColor={styles.actionButtonText}
               onPress={() => {
                 checkAnswer();
-                validAnswer === true
+                validAnswer
                   ? navigation.navigate('Correct', {
                       item,
                       otherParam: findPhrasesById,
